@@ -38,7 +38,11 @@ getNouns = function(cb){
     finalTweet: ""
   };
   var client = new Client();
-  var wordnikRandomURL = 'http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=noun&minCorpusCount=0&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=-1&limit=10&api_key=';
+  var wordnikRandomURL = 'http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=noun' +
+      '&minCorpusCount=0&maxCorpusCount=-1' +
+      '&minDictionaryCount=1&maxDictionaryCount=-1&' +
+      'excludePartOfSpeech=noun-plural&' +
+      'minLength=5&maxLength=-1&limit=10&api_key=';
   var args = {headers: {'Accept':'application/json'}};
   var wordnikURL = wordnikRandomURL + wordnikKey;
 
@@ -61,8 +65,11 @@ getNouns = function(cb){
 
 getVerbs = function(botData, cb){
   var client = new Client();
-  var wordnikRandomURL = 'http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=verb&minCorpusCount=0&maxCorpusCount=-1&minDictionaryCount=1&maxDictionaryCount=-1&minLength=5&maxLength=-1&limit=10&api_key=';
-  var args = {headers: {'Accept':'application/json'}};
+  var wordnikRandomURL = 'http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=verb' +
+      '&minCorpusCount=0&maxCorpusCount=-1' +
+      '&minDictionaryCount=1&maxDictionaryCount=-1&' +
+      'minLength=5&maxLength=-1&limit=10&api_key=';
+  var args = {headers: {'Accept':'application/json'}};  var args = {headers: {'Accept':'application/json'}};
   var wordnikURL = wordnikRandomURL + wordnikKey;
 
   client.get(wordnikURL, args, function (data, response) {
@@ -90,7 +97,7 @@ formatTweet = function(botData, cb){
   var conjunction = conjunctions[Math.floor(Math.random()*conjunctions.length)];
   var final = finals[Math.floor(Math.random()*finals.length)];
 
-  botData.finalTweet = conjunction + " the " + botData.noun + ", they " + botData.verb + " " + final + ".";
+  botData.finalTweet = conjunction + " the " + botData.noun + ", it " + botData.verb + " " + final + ".";
 
   cb(null, botData);
 }
@@ -98,9 +105,9 @@ formatTweet = function(botData, cb){
 postTweet = function(botData, cb) {
   console.log("botData: ", botData);
 
-  // t.post('statuses/update', {status: botData.finalTweet}, function(err, data, response) {
-  //   cb(err, botData);
-  // });
+  t.post('statuses/update', {status: botData.finalTweet}, function(err, data, response) {
+    cb(err, botData);
+  });
 }
 
 run();
