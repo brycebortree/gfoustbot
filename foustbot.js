@@ -103,10 +103,11 @@ getPresentTense = function(botData, cb){
     if (response.statusCode === 200) {
       if(!data.length){
         botData.present.push(botData.verb);
-      }
-      for(var i = 0; i < 1; i++){
-        var temp = data[i];
-        botData.present.push(temp.words);
+      } else {
+        for(var i = 0; i < 1; i++){
+          var temp = data[i];
+          botData.present.push(temp.words);
+        }
       }
       if (botData.present.length) {
         cb(null, botData);
