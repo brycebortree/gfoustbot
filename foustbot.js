@@ -16,8 +16,9 @@ var wordnikKey = env.WORDNIK_API_KEY
 
 run = function() {
   async.waterfall([
-    getNouns,
-    getVerbs,
+    getNoun,
+    getVerb,
+    getPresentTense,
     formatTweet,
     postTweet
   ],
@@ -31,10 +32,11 @@ run = function() {
   });
 }
 
-getNouns = function(cb){
+getNoun = function(cb){
   var botData = {
     noun: [],
     verb: [],
+    present: [],
     finalTweet: ""
   };
   var client = new Client();
@@ -62,7 +64,7 @@ getNouns = function(cb){
   });
 };
 
-getVerbs = function(botData, cb){
+getVerb = function(botData, cb){
   var client = new Client();
   var wordnikRandomURL = 'http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false&includePartOfSpeech=verb' +
       '&minCorpusCount=0&maxCorpusCount=-1' +
@@ -88,6 +90,28 @@ getVerbs = function(botData, cb){
   });
 };
 
+getPresentTense = function(botData, cb){
+  var client = new Client();
+  var wordnikPresentURL = 'http://api.wordnik.com:80/v4/word.json/helping/relatedWords?useCanonical=false&relationshipTypes=verb-stem&limitPerRelationshipType=10&api_key=';
+  var args = {headers: {'Accept':'application/json'}};
+  var wordnikURL = wordnikPresentURL + wordnikKey;
+
+  client.get(wordnikURL, args, function (data, response) {
+    if (response.statusCode === 200) {
+      for(var i = 0; i < 1; i++){
+        var temp = data[i];
+        botData.present.push(temp.words);
+      }
+      if (botData.present.length) {
+        cb(null, botData);
+      } else {
+        cb(null, null);
+      }
+    } else {
+      cb(null, null);
+    }
+  });
+};
 
 formatTweet = function(botData, cb){
   var conjunctions = ["For", "And", "Nor", "But", "Or", "Yet", "So", "For", "And", "Nor", "But", "Or", "Yet", "So", "Though", "Once", "While", "Since"];
@@ -96,7 +120,7 @@ formatTweet = function(botData, cb){
   var conjunction = conjunctions[Math.floor(Math.random()*conjunctions.length)];
   var final = finals[Math.floor(Math.random()*finals.length)];
 
-  botData.finalTweet = conjunction + " the " + botData.noun + ", they " + botData.verb + " " + final + ".";
+  botData.finalTweet = conjunction + " the " + botData.noun + ", they " + botData.present + " " + final + ".";
 
   cb(null, botData);
 }
@@ -104,9 +128,9 @@ formatTweet = function(botData, cb){
 postTweet = function(botData, cb) {
   console.log("botData: ", botData);
 
-  t.post('statuses/update', {status: botData.finalTweet}, function(err, data, response) {
-    cb(err, botData);
-  });
+  // t.post('statuses/update', {status: botData.finalTweet}, function(err, data, response) {
+  //   cb(err, botData);
+  // });
 }
 
 run();
