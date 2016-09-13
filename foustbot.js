@@ -92,12 +92,18 @@ getVerb = function(botData, cb){
 
 getPresentTense = function(botData, cb){
   var client = new Client();
-  var wordnikPresentURL = 'http://api.wordnik.com:80/v4/word.json/helping/relatedWords?useCanonical=false&relationshipTypes=verb-stem&limitPerRelationshipType=10&api_key=';
+  var wordnikPresentURL = 'http://api.wordnik.com:80/v4/word.json/' 
+  var wordnikPresentURLPart2 = '/relatedWords?useCanonical=false&relationshipTypes=verb-stem&limitPerRelationshipType=10&api_key=';
   var args = {headers: {'Accept':'application/json'}};
-  var wordnikURL = wordnikPresentURL + wordnikKey;
+  var wordnikURL = wordnikPresentURL + botData.verb + wordnikPresentURLPart2 + wordnikKey;
+
+  console.log("wordnikurl: ", wordnikURL);
 
   client.get(wordnikURL, args, function (data, response) {
     if (response.statusCode === 200) {
+      if(!data.length){
+        botData.present.push(botData.verb);
+      }
       for(var i = 0; i < 1; i++){
         var temp = data[i];
         botData.present.push(temp.words);
@@ -114,7 +120,7 @@ getPresentTense = function(botData, cb){
 };
 
 formatTweet = function(botData, cb){
-  var conjunctions = ["For", "And", "Nor", "But", "Or", "Yet", "So", "For", "And", "Nor", "But", "Or", "Yet", "So", "Though", "Once", "While", "Since"];
+  var conjunctions = ["For", "And", "But", "Or", "Yet", "So", "For", "And", "But", "Or", "Yet", "So", "Though", "Once", "While", "Since"];
   var finals = ["something", "anything", "nothing", "everything"];
 
   var conjunction = conjunctions[Math.floor(Math.random()*conjunctions.length)];
