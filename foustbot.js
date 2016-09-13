@@ -126,11 +126,9 @@ formatTweet = function(botData, cb){
 }
 
 postTweet = function(botData, cb) {
-  console.log("botData: ", botData);
-
-  // t.post('statuses/update', {status: botData.finalTweet}, function(err, data, response) {
-  //   cb(err, botData);
-  // });
+  t.post('statuses/update', {status: botData.finalTweet}, function(err, data, response) {
+    cb(err, botData);
+  });
 }
 
 run();
