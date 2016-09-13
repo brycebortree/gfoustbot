@@ -6,6 +6,7 @@
   "dependencies": {
     "async": "^2.0.1",
     "dotenv": "^2.0.0",
+    "node-rest-client": "^2.0.1",
     "twit": "^2.2.4",
     "wordfilter": "^0.2.6"
   },
