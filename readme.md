@@ -28,6 +28,42 @@ Then refine the random words and tweets you're making.
 
 CONJUNCTION the NOUN-PLURAL they VERB-PRESENT everything/something/nothing/anything
 
+
+### Code sample
+I puleld the getPresentTense function to talk about briefly. Taking the botData from previous functions and callback for the async waterfall, this function uses the node-rest-client to make a query to the WordNik API and inputs the current verb to get it's verb stem. This allows the bot to tweet in the present tense, when possible, in keeping with Foust's urgency of 'they own everything.'
+
+```
+getPresentTense = function(botData, cb){
+  var client = new Client();
+  var wordnikPresentURL = 'http://api.wordnik.com:80/v4/word.json/' 
+  var wordnikPresentURLPart2 = '/relatedWords?useCanonical=false&relationshipTypes=verb-stem&limitPerRelationshipType=10&api_key=';
+  var args = {headers: {'Accept':'application/json'}};
+  var wordnikURL = wordnikPresentURL + botData.verb + wordnikPresentURLPart2 + wordnikKey;
+
+  console.log("wordnikurl: ", wordnikURL);
+
+  client.get(wordnikURL, args, function (data, response) {
+    if (response.statusCode === 200) {
+      if(!data.length){
+        botData.present.push(botData.verb);
+      } else {
+        for(var i = 0; i < 1; i++){
+          var temp = data[i];
+          botData.present.push(temp.words);
+        }
+      }
+      if (botData.present.length) {
+        cb(null, botData);
+      } else {
+        cb(null, null);
+      }
+    } else {
+      cb(null, null);
+    }
+  });
+};
+```
+
 ## Deployment
 
 This bot was deployed to Heroku with a simple Procfile and uses the Heroku scheduler to tweet every hour.
