@@ -41,12 +41,14 @@ getNoun = function(cb){
   };
   var client = new Client();
   var wordnikRandomURL = 'http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false' +
-      '&includePartOfSpeech=noun-plural&excludePartOfSpeech=proper-noun-plural' +
-      '&minCorpusCount=0&maxCorpusCount=-1' +
+      '&includePartOfSpeech=noun&excludePartOfSpeech=proper-noun' +
+      '&minCorpusCount=500&maxCorpusCount=-1' +
       '&minDictionaryCount=1&maxDictionaryCount=-1&' +
       'minLength=5&maxLength=-1&limit=10&api_key=';
   var args = {headers: {'Accept':'application/json'}};
   var wordnikURL = wordnikRandomURL + wordnikKey;
+
+  console.log("getNoun URL: ", wordnikURL);
 
   client.get(wordnikURL, args, function (data, response) {
     if (response.statusCode === 200) {
@@ -128,7 +130,7 @@ formatTweet = function(botData, cb){
   var conjunction = conjunctions[Math.floor(Math.random()*conjunctions.length)];
   var final = finals[Math.floor(Math.random()*finals.length)];
 
-  botData.finalTweet = conjunction + " the " + botData.noun + ", they " + botData.present + " " + final + ".";
+  botData.finalTweet = conjunction + " the " + botData.noun + " they " + botData.present + " " + final;
 
   cb(null, botData);
 }
