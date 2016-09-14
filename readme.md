@@ -19,7 +19,7 @@ You'll need:
 Feel free to clone this repo and edit the foustbot.js file to create your own Twitter poet bots. Edit the foustbot.js file's requests to the Wordnik API. Run from your command line using 
 
 ```
-foustbot.js
+node foustbot.js
 ```
 
 Then refine the random words and tweets you're making.
@@ -39,7 +39,16 @@ main: node foustbot.js
 
 ## Built With
 
+* Twitter API - for tweeting
+* Wordnik API - helps us check for parts of speech and isolate adjectives and nouns
 * NPM - to install various node packages that made the process much easier
+* async - to create an array of separate functions called in order that pass along data to each other
+* dotenv -  makes our env variables easier to bring in to our js
+* node-rest-client -returns API requests as JavaScript objects
+* twit - a simple npm module that makes search and retweeting easier
+* wordfilter - keeps our bot family friendly with a 'blacklist' of inappropriate language
+* Heroku - for deployment
+* Heroku Scheduler - to create a cron job
 
 ## License
 
