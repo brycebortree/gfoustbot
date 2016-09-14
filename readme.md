@@ -1,3 +1,5 @@
+![Those darn grandchildren](./GFoustBot.jpg?raw=true "Graham Foust Bot in action")
+
 # GFoustBot
 
 A bot that riffs on the poem "And the ghosts they own everything" by [Graham Foust](http://twitter.com/finedistraction)
