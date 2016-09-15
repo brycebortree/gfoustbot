@@ -42,7 +42,7 @@ getNoun = function(cb){
   var client = new Client();
   var wordnikRandomURL = 'http://api.wordnik.com:80/v4/words.json/randomWords?hasDictionaryDef=false' +
       '&includePartOfSpeech=noun&excludePartOfSpeech=proper-noun' +
-      '&minCorpusCount=500&maxCorpusCount=-1' +
+      '&minCorpusCount=1000&maxCorpusCount=-1' +
       '&minDictionaryCount=1&maxDictionaryCount=-1&' +
       'minLength=5&maxLength=-1&limit=10&api_key=';
   var args = {headers: {'Accept':'application/json'}};
