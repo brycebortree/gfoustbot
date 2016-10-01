@@ -141,6 +141,8 @@ postTweet = function(botData, cb) {
   });
 }
 
+// run();
+
 setInterval(function() {
   try {
     run();
