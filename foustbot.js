@@ -141,7 +141,13 @@ postTweet = function(botData, cb) {
   });
 }
 
-run();
-
+setInterval(function() {
+  try {
+    run();
+  }
+  catch (e) {
+    console.log(e);
+  }
+}, 60000 * 40);
 
 
